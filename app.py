@@ -25,6 +25,7 @@ def predict():
     cgpa = float(request.form['cgpa'])
     income = float(request.form['income'])
     attendance = float(request.form['attendance'])
+    category = request.form['category']
     backlogs = int(request.form['backlogs'])
 
     # Prepare data for prediction
@@ -46,11 +47,12 @@ def predict():
 
     # Fetch matching scholarships
     cursor.execute("""
-        SELECT scholarship_name, amount, official_link
-        FROM Scholarships
-        WHERE min_cgpa <= ?
-        AND max_income >= ?
-    """, (cgpa, income))
+    SELECT scholarship_name, amount, official_link
+    FROM Scholarships
+    WHERE min_cgpa <= ?
+    AND max_income >= ?
+    AND category = ?
+""", (cgpa, income, category))
 
     scholarships = cursor.fetchall()
 
